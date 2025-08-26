@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مختبر الربيع الجانبي - Ultimate</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Cairo', sans-serif; }
+body { background:#0b9d0b; overflow-x:hidden; color:white; }
+#particles-js { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
+
+/* ===== Navbar ===== */
+nav {
+  position: fixed; top:0; left:0; width:100%;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:15px 40px; background: rgba(0,0,0,0.2); backdrop-filter: blur(10px);
+  z-index:100; gap:25px;
+}
+nav .logo { font-size:1.8rem; font-weight:bold; color:#ffd700; }
+nav .nav-links { display:flex; gap:25px; align-items:center; }
+nav .nav-links a {
+  color:white; text-decoration:none; font-weight:bold; padding:10px 20px; border-radius:12px;
+  display:flex; align-items:center; gap:8px; transition: all 0.3s ease;
+}
+nav .nav-links a:hover { background:#4caf50; color:#111; transform:scale(1.1); }
+
+/* ===== Header ===== */
+header { height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:0 20px; }
+header h1 { font-size:4rem; text-shadow: 0 0 20px #4caf50, 0 0 30px #81c784; animation: glow 2s infinite alternate; }
+@keyframes glow { from { text-shadow:0 0 20px #4caf50,0 0 30px #81c784; } to { text-shadow:0 0 40px #a5d6a7,0 0 60px #c8e6c9; } }
+header p { font-size:1.5rem; margin-top:15px; opacity:0.85; animation: fadeInUp 2s ease forwards; }
+@keyframes fadeInUp { 0%{opacity:0; transform:translateY(50px);} 100%{opacity:1; transform:translateY(0);} }
+
+/* ===== Sections ===== */
+section { padding:100px 20px; max-width:1300px; margin:auto; position:relative; }
+.intro { display:flex; flex-wrap:wrap; align-items:center; gap:50px; }
+.intro img { flex:1 1 400px; border-radius:25px; box-shadow:0 20px 60px rgba(0,0,0,0.5); transform-style: preserve-3d; transition: transform 0.6s; }
+.intro img:hover { transform: rotateY(15deg) scale(1.1) rotateX(5deg); }
+.intro-text { flex:1 1 400px; color:white; }
+.intro-text h2 { font-size:3rem; color:white; margin-bottom:25px; animation: fadeInLeft 1.5s ease forwards; }
+.intro-text p { font-size:1.2rem; line-height:1.8; opacity:0.9; }
+@keyframes fadeInLeft { 0%{opacity:0; transform:translateX(-50px);} 100%{opacity:1; transform:translateX(0);} }
+
+/* ===== Services ===== */
+.services h2 { font-size:3rem; text-align:center; margin-bottom:60px; color:#81c784; }
+.service-cards { display:flex; flex-wrap:wrap; justify-content:center; gap:50px; }
+.card {
+  background:rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+  width:280px; padding:40px 20px; border-radius:25px; text-align:center; transition: all 0.5s ease; transform-style: preserve-3d;
+}
+.card:hover { transform: rotateY(20deg) scale(1.05); box-shadow:0 25px 70px rgba(0,255,128,0.4); }
+.card i { font-size:3.5rem; color:#4caf50; margin-bottom:20px; transition: transform 0.5s ease; }
+.card:hover i { transform: rotate(20deg) scale(1.2); }
+.card h3 { font-size:1.8rem; margin-bottom:15px; }
+.card p { font-size:1rem; color:white; opacity:0.8; }
+
+/* ===== Buttons Section ===== */
+.buttons-section { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:30px; }
+.buttons-section button, .whatsapp-button {
+  display:flex; align-items:center; gap:10px; background:#4caf50; color:white; border:none; padding:12px 22px; border-radius:15px; font-weight:bold; cursor:pointer; transition: all 0.3s ease;
+}
+.buttons-section button:hover, .whatsapp-button:hover { background:#81c784; transform:scale(1.05); }
+
+/* ===== Payment Modal ===== */
+.modal { display:none; position:fixed; z-index:200; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
+.modal-content { background:#0b3d0b; padding:30px; border-radius:25px; text-align:center; max-width:500px; width:90%; color:white; position:relative; }
+.modal-content img { width:200px; margin-bottom:20px; border-radius:15px; }
+.close { position:absolute; top:15px; right:20px; font-size:1.5rem; cursor:pointer; color:#ffd700; }
+
+/* ===== Location & Map ===== */
+#map { width:100%; height:400px; border-radius:25px; margin-top:20px; box-shadow:0 10px 40px rgba(0,0,0,0.3); }
+
+/* ===== Footer ===== */
+footer { background:#0b3d0b; color:white; text-align:center; padding:40px 20px; border-top: 1px solid #4caf50; }
+footer a { color:#4caf50; margin:0 10px; font-size:1.5rem; transition: all 0.3s ease; }
+footer a:hover { transform: scale(1.2); }
+
+/* ===== Media Queries ===== */
+@media(max-width:768px){ .intro { flex-direction:column; } .service-cards { flex-direction:column; gap:40px; } nav { flex-direction:column; gap:15px; } .buttons-section { flex-direction:column; gap:20px; } }
+</style>
+</head>
+<body>
+
+<div id="particles-js"></div>
+
+<nav>
+  <div class="logo">مختبر الربيع الجانبي</div>
+  <div class="nav-links">
+    <a href="#about"><i class="fas fa-users"></i> من نحن</a>
+    <a href="#services"><i class="fas fa-flask"></i> خدماتنا</a>
+    <a href="#location"><i class="fas fa-map-marker-alt"></i> موقعنا</a>
+    <a id="contact-nav"><i class="fab fa-whatsapp"></i> تواصل معنا</a>
+    <a id="payment-nav"><i class="fas fa-credit-card"></i> الدفع الإلكتروني</a>
+  </div>
+</nav>
+
+<header>
+  <h1>مختبر الربيع الجانبي</h1>
+  <p>تحاليل طبية فائقة الدقة مع أحدث الأجهزة والفريق المتخصص</p>
+</header>
+
+<main>
+<section id="about" class="intro">
+  <img src="https://i.ibb.co/3M0R0z7/lab.jpg" alt="مختبر">
+  <div class="intro-text">
+    <h2>عن مختبرنا</h2>
+    <p>مختبر الربيع الجانبي يجمع بين أحدث التقنيات وأفضل الخبراء لضمان تحاليل دقيقة وسريعة. نحن نقدم تجربة احترافية بالكامل مع خدمة عملاء عالية الجودة.</p>
+  </div>
+</section>
+
+<section id="services" class="services">
+<h2>خدماتنا</h2>
+<div class="service-cards">
+  <div class="card">
+    <i class="fas fa-vials"></i>
+    <h3>تحاليل الدم</h3>
+    <p>نتائج دقيقة باستخدام أحدث أجهزة فحص الدم.</p>
+  </div>
+  <div class="card">
+    <i class="fas fa-tint"></i>
+    <h3>تحاليل الادرار</h3>
+    <p>فحص شامل وتحاليل دقيقة للادرار.</p>
+  </div>
+  <div class="card">
+    <i class="fas fa-microscope"></i>
+    <h3>تحاليل الهرمونات</h3>
+    <p>تحاليل دقيقة للهرمونات مع تقارير مفصلة.</p>
+  </div>
+  <div class="card">
+    <i class="fas fa-flask"></i>
+    <h3>تحاليل اخرى</h3>
+    <p>تحليل شامل لأي فحوصات أخرى تحتاجها، مع التوصيل السريع للنتائج.</p>
+  </div>
+</div>
+
+<div class="buttons-section">
+  <a class="whatsapp-button" href="https://wa.me/9647700000000" target="_blank">
+    <i class="fab fa-whatsapp"></i> ارسال النتائج
+  </a>
+</div>
+<p style="text-align:center; margin-top:10px;">حلل واترك رقمك وتوصلك النتيجة لبيتك</p>
+</section>
+
+<section id="location" class="services">
+<h2>موقعنا</h2>
+<p style="text-align:center; font-size:1.2rem; margin-bottom:20px;">العنوان: شارع الربيع، جانب المدينة، العراق</p>
+<div id="map"></div>
+</section>
+</main>
+
+<!-- ===== Payment Modal ===== -->
+<div id="paymentModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closePayment">&times;</span>
+    <h2>الدفع الإلكتروني</h2>
+    <p>اختر وسيلة الدفع</p>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard">
+    <p>زين كاش: 07700000000</p>
+    <p>رقم البطاقة: 1234 5678 9012 3456</p>
+  </div>
+</div>
+
+<footer>
+  &copy; 2025 مختبر الربيع الجانبي | جميع الحقوق محفوظة | 
+  <a href="#"><i class="fab fa-facebook-f"></i></a>
+  <a href="#"><i class="fab fa-twitter"></i></a>
+  <a href="#"><i class="fab fa-instagram"></i></a>
+</footer>
+
+<!-- ===== Scripts ===== -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+particlesJS("particles-js", {
+  "particles": {
+    "number": { "value": 100 },
+    "color": { "value": "#4caf50" },
+    "shape": { "type": "circle" },
+    "opacity": { "value": 0.6, "random": true },
+    "size": { "value": 4, "random": true },
+    "line_linked": { "enable": true, "distance": 150, "color": "#4caf50", "opacity":0.3, "width":1 },
+    "move": { "enable": true, "speed": 2 }
+  },
+  "interactivity": {
+    "detect_on":"canvas",
+    "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } },
+    "modes": { "repulse": { "distance":100 } }
+  },
+  "retina_detect": true
+});
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+<script>
+function initMap() {
+  var labLocation = { lat: 33.3152, lng: 44.3661 };
+  var map = new google.maps.Map(document.getElementById('map'), { zoom: 16, center: labLocation });
+  var marker = new google.maps.Marker({ position: labLocation, map: map, title: "مختبر الربيع الجانبي" });
+}
+window.onload = initMap;
+
+// Payment modal
+const paymentBtn = document.getElementById('payment-nav');
+const modal = document.getElementById('paymentModal');
+const closeModal = document.getElementById('closePayment');
+paymentBtn.onclick = ()=> modal.style.display='flex';
+closeModal.onclick = ()=> modal.style.display='none';
+window.onclick = (e)=> { if(e.target==modal) modal.style.display='none'; }
+</script>
+</body>
+</html>
